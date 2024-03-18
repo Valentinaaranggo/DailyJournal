@@ -18,7 +18,7 @@ Installation
 
 Make sure you have Flutter installed. For installation instructions, refer to the official documentation.
 
-git clone https://github.com/your-username/daily_journal_app.git
+git clone https://github.com/valentina/daily_journal_app.git
 
 Navigate to the project directory:
 cd daily_journal_app
