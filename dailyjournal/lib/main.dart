@@ -48,3 +48,56 @@ class JournalApp extends StatelessWidget {
     );
   }
 }
+
+
+class JournalScreen extends StatefulWidget {
+  @override
+  _JournalScreenState createState() => _JournalScreenState();
+}
+
+class _JournalScreenState extends State<JournalScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = [
+    StartJournalingScreen(),
+    QuotesScreen(),
+    EntriesPage(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('DailyJournal'),
+      ),
+      body: AnimatedSwitcher(
+        duration: Duration(milliseconds: 500),
+        child: _screens[_currentIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: onTabTapped,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Start Journaling',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.format_quote),
+            label: 'Quotes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            label: 'Entries',
+          ),
+        ],
+      ),
+    );
+  }
+}
