@@ -343,3 +343,264 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () =>
+                  child: Text('Upload from Camera Roll'),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                if (entryTitle != null && entryText != null && mood != null) {
+                  final newEntry = {
+                    'title': entryTitle,
+                    'text': entryText,
+                    'mood': mood,
+                    'date': DateTime.now().toString(),
+                    'image': imageBytes,
+                  };
+                  Navigator.pop(context, newEntry);
+                } else {
+                  // Show error or prompt to fill all fields
+                }
+              },
+              child: Text('Save Entry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EntryDetailScreen extends StatelessWidget {
+  final Map<String, dynamic> entry;
+  final int index;
+  final Function(Map<String, dynamic> entry, int index) onSave;
+  final VoidCallback onDelete;
+
+  EntryDetailScreen(
+      {required this.entry,
+      required this.index,
+      required this.onSave,
+      required this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Entry Detail'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Text(
+                entry['title'],
+                style: TextStyle(
+                  fontSize: 48.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                'Date: ${entry['date']}',
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16.0),
+              Hero(
+                tag: 'image_${entry['date']}', // Unique tag for each image
+                child: entry['image'] != null
+                    ? Image.memory(
+                        entry['image'],
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
+                    : SizedBox.shrink(),
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                entry['text'],
+                style: TextStyle(fontSize: 36.0, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditEntryScreen(
+                      entry: entry,
+                      index: index,
+                      onSave: onSave,
+                    ),
+                  ),
+                );
+              },
+              child: Text('Edit Entry'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Delete Entry'),
+                      content:
+                          Text('Are you sure you want to delete this entry?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: onDelete,
+                          child: Text('Yes'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text('Delete Entry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+class EditEntryScreen extends StatefulWidget {
+  final Map<String, dynamic> entry;
+  final int index;
+  final Function(Map<String, dynamic> entry, int index) onSave;
+
+  EditEntryScreen(
+      {required this.entry, required this.index, required this.onSave});
+
+  @override
+  _EditEntryScreenState createState() => _EditEntryScreenState();
+}
+
+class _EditEntryScreenState extends State<EditEntryScreen> {
+  String? mood;
+  String? entryTitle;
+  String? entryText;
+  Uint8List? imageBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    entryTitle = widget.entry['title'];
+    entryText = widget.entry['text'];
+    mood = widget.entry['mood'];
+    imageBytes = widget.entry['image'];
+  }
+
+  Future<void> _getImage(ImageSource source) async {
+    final pickedImage = await ImagePicker().getImage(source: source);
+    if (pickedImage != null) {
+      final bytes = await pickedImage.readAsBytes();
+      setState(() {
+        imageBytes = bytes;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Entry'),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextFormField(
+              initialValue: entryTitle,
+              onChanged: (value) {
+                setState(() {
+                  entryTitle = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Title',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            DropdownButtonFormField<String>(
+              value: mood,
+              onChanged: (value) {
+                setState(() {
+                  mood = value ?? '';
+                });
+              },
+              items: <String>['Happy', 'Sad', 'Angry', 'Excited']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Mood',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextFormField(
+              initialValue: entryText,
+              onChanged: (value) {
+                setState(() {
+                  entryText = value;
+                });
+              },
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                labelText: 'Write about your day...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () => _getImage(ImageSource.gallery),
+              child: Text('Pick Image'),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                final editedEntry = {
+                  'title': entryTitle,
+                  'text': entryText,
+                  'mood': mood,
+                  'date': DateTime.now().toString(),
+                  'image': imageBytes,
+                };
+                widget.onSave(editedEntry, widget.index);
+                Navigator.pop(context);
+              },
+              child: Text('Save Changes'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
