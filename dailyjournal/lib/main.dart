@@ -101,3 +101,63 @@ class _JournalScreenState extends State<JournalScreen> {
     );
   }
 }
+
+class StartJournalingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 500),
+                pageBuilder: (, , ) => EntriesPage(),
+                transitionsBuilder: (_, animation, __, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+          child: Text('Start Journaling'),
+        ),
+      ),
+    );
+  }
+}
+
+class QuotesScreen extends StatelessWidget {
+  final List<String> quotes = [
+    '"It takes courage to grow up and become who you really are." — E.E. Cummings',
+    '"Nothing is impossible. The word itself says I am possible!" — Audrey Hepburn',
+    '"To bring about change, you must not be afraid to take the first step. We will fail when we fail to try." — Rosa Parks',
+  ];
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Motivational'),
+      ),
+      body: PageView.builder(
+        itemCount: quotes.length,
+        itemBuilder: (context, index) {
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                quotes[index],
+                style: TextStyle(fontSize: 20.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
