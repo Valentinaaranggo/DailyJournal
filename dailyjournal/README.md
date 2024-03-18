@@ -2,15 +2,34 @@
 
 A new Flutter project.
 
-## Getting Started
+Daily Journal App
 
-This project is a starting point for a Flutter application.
+This is a Flutter application that allows users to journal their daily experiences, read motivational quotes, and manage their journal entries.
 
-A few resources to get you started if this is your first Flutter project:
+Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Start Journaling: Begin your journaling journey by tapping the "Start Journaling" button. This will take you to the screen where you can add new journal entries.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Motivational Quotes: Read inspirational quotes to boost your motivation and mood. Swipe left or right to view different quotes.
+
+Journal Entries: View and manage your journal entries. Each entry includes a title, date, mood, and an optional image. You can edit or delete existing entries and add new ones.
+
+Installation
+
+Make sure you have Flutter installed. For installation instructions, refer to the official documentation.
+
+git clone https://github.com/your-username/daily_journal_app.git
+
+Navigate to the project directory:
+cd daily_journal_app
+
+Run the app on a connected device or emulator:
+flutter run
+
+Dependencies
+flutter/material.dart
+image_picker
+shared_preferences
+Contributions
+
+Contributions are welcome! If you find any bugs or want to suggest improvements, please feel free to open an issue or create a pull request.
