@@ -5,13 +5,13 @@
 1. Clone this repository to your local machine:
 
     ```
-    git clone [repository-url]
+    git clone [DailyJournal]
     ```
 
 2. Navigate to the project directory:
 
     ```
-    cd [project-directory]
+    cd [DailyJournal]
     ```
 
 3. Get the dependencies:
