@@ -1,8 +1,6 @@
-# dailyjournal
+# DailyJournal
 
-A new Flutter project.
-
-Daily Journal App
+## Running the App
 
 This is a Flutter application that allows users to journal their daily experiences, read motivational quotes, and manage their journal entries.
 
@@ -14,22 +12,30 @@ Motivational Quotes: Read inspirational quotes to boost your motivation and mood
 
 Journal Entries: View and manage your journal entries. Each entry includes a title, date, mood, and an optional image. You can edit or delete existing entries and add new ones.
 
-Installation
 
-Make sure you have Flutter installed. For installation instructions, refer to the official documentation.
 
-git clone https://github.com/valentina/daily_journal_app.git
+1. Clone this repository to your local machine:
 
-Navigate to the project directory:
-cd daily_journal_app
+    ```
+    git clone [DailyJournal]
+    ```
 
-Run the app on a connected device or emulator:
-flutter run
+2. Navigate to the project directory:
 
-Dependencies
-flutter/material.dart
-image_picker
-shared_preferences
-Contributions
+    ```
+    cd [DailyJournal]
+    ```
 
-Contributions are welcome! If you find any bugs or want to suggest improvements, please feel free to open an issue or create a pull request.
+3. Get the dependencies:
+
+    ```
+    flutter pub get
+    ```
+
+4. Connect your device or start an emulator.
+
+5. Run the app:
+
+    ```
+    flutter run
+    ```
