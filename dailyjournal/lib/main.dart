@@ -161,3 +161,103 @@ class QuotesScreen extends StatelessWidget {
     );
   }
 }
+
+class EntriesPage extends StatefulWidget {
+  @override
+  _EntriesPageState createState() => _EntriesPageState();
+}
+
+class _EntriesPageState extends State<EntriesPage> {
+  List<Map<String, dynamic>> entries = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEntries();
+  }
+
+  Future<void> _loadEntries() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? entriesJson = prefs.getStringList('entries');
+    if (entriesJson != null) {
+      setState(() {
+        entries = entriesJson
+            .map((e) => json.decode(e) as Map<String, dynamic>)
+            .toList();
+      });
+    }
+  }
+
+  Future<void> _saveEntries() async {
+    final prefs = await SharedPreferences.getInstance();
+    final entriesJson = entries.map((e) => json.encode(e)).toList();
+    await prefs.setStringList('entries', entriesJson);
+  }
+
+  void deleteEntry(int index) {
+    setState(() {
+      entries.removeAt(index);
+      _saveEntries();
+    });
+    Navigator.pop(context);
+  }
+
+  void saveEditedEntry(Map<String, dynamic> entry, int index) {
+    setState(() {
+      entries[index] = entry;
+      _saveEntries();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Entries'),
+      ),
+      body: ListView.builder(
+        itemCount: entries.length,
+        itemBuilder: (context, index) {
+          final entry = entries[index];
+          return ListTile(
+            title: Text(entry['title']),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Date: ${entry['date']}'),
+              ],
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EntryDetailScreen(
+                    entry: entry,
+                    index: index,
+                    onSave: saveEditedEntry,
+                    onDelete: () => deleteEntry(index),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final newEntry = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddEntryScreen()),
+          );
+          if (newEntry != null) {
+            setState(() {
+              entries.add(newEntry);
+              _saveEntries();
+            });
+          }
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
