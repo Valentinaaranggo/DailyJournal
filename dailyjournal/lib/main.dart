@@ -49,7 +49,6 @@ class JournalApp extends StatelessWidget {
   }
 }
 
-
 class JournalScreen extends StatefulWidget {
   @override
   _JournalScreenState createState() => _JournalScreenState();
@@ -114,7 +113,7 @@ class StartJournalingScreen extends StatelessWidget {
               context,
               PageRouteBuilder(
                 transitionDuration: Duration(milliseconds: 500),
-                pageBuilder: (, , ) => EntriesPage(),
+                pageBuilder: (_, __, ___) => EntriesPage(),
                 transitionsBuilder: (_, animation, __, child) {
                   return FadeTransition(
                     opacity: animation,
@@ -137,7 +136,8 @@ class QuotesScreen extends StatelessWidget {
     '"Nothing is impossible. The word itself says I am possible!" — Audrey Hepburn',
     '"To bring about change, you must not be afraid to take the first step. We will fail when we fail to try." — Rosa Parks',
   ];
-@override
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -282,8 +282,8 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       });
     }
   }
-}
-@override
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -342,7 +342,11 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () =>
+                  onPressed: () => _getImage(ImageSource.camera),
+                  child: Text('Take Picture'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _getImage(ImageSource.gallery),
                   child: Text('Upload from Camera Roll'),
                 ),
               ],
@@ -485,6 +489,7 @@ class EntryDetailScreen extends StatelessWidget {
     );
   }
 }
+
 class EditEntryScreen extends StatefulWidget {
   final Map<String, dynamic> entry;
   final int index;
