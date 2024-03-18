@@ -364,7 +364,6 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                   };
                   Navigator.pop(context, newEntry);
                 } else {
-                  // Show error or prompt to fill all fields
                 }
               },
               child: Text('Save Entry'),
