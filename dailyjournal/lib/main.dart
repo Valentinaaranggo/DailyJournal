@@ -261,3 +261,25 @@ class _EntriesPageState extends State<EntriesPage> {
     );
   }
 }
+
+class AddEntryScreen extends StatefulWidget {
+  @override
+  _AddEntryScreenState createState() => _AddEntryScreenState();
+}
+
+class _AddEntryScreenState extends State<AddEntryScreen> {
+  String? mood;
+  String? entryTitle;
+  String? entryText;
+  Uint8List? imageBytes;
+
+  Future<void> _getImage(ImageSource source) async {
+    final pickedImage = await ImagePicker().getImage(source: source);
+    if (pickedImage != null) {
+      final bytes = await pickedImage.readAsBytes();
+      setState(() {
+        imageBytes = bytes;
+      });
+    }
+  }
+}
