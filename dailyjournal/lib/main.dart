@@ -283,3 +283,63 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     }
   }
 }
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Entry'),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  entryTitle = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Title',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            DropdownButtonFormField<String>(
+              value: mood,
+              onChanged: (value) {
+                setState(() {
+                  mood = value ?? '';
+                });
+              },
+              items: <String>['Happy', 'Sad', 'Angry', 'Excited']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Mood',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  entryText = value;
+                });
+              },
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                labelText: 'Write about your day...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () =>
